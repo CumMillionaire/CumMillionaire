@@ -1,6 +1,6 @@
 'use client';
 
-import { useAccount, useReadContract } from 'wagmi';
+import { useAccount, useChainId, useReadContract } from 'wagmi';
 import { formatUnits } from 'viem';
 import {
   Accordion,
@@ -45,6 +45,7 @@ const MotionBox = motion.create(Box);
 
 export default function Home() {
   const { address } = useAccount();
+  const chainId = useChainId();
 
   const { data: cummiesBalance, refetch: refetchBalance } = useReadContract({
     address: CONTRACTS.CUMMIES_TOKEN,
@@ -115,7 +116,8 @@ export default function Home() {
               <GradientText>CumMillionaire</GradientText>
             </Text>
             <Badge ml={3} border="1px solid {colors.whiteAlpha.950/10}" borderRadius="full">
-              BNB Chain
+              {chainId === 56 && 'BNB Chain'}
+              {chainId === 97 && 'BNB Chain Testnet'}
             </Badge>
           </Flex>
           <Flex align="center" gap={3}>
