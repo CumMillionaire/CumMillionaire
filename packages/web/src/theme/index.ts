@@ -1,11 +1,7 @@
-import {
-  createSystem,
-  defineConfig,
-  defineRecipe,
-  defineSlotRecipe,
-  defaultConfig,
-} from '@chakra-ui/react';
-import { cardAnatomy } from '@chakra-ui/react/anatomy';
+import { createSystem, defineConfig, defaultConfig } from '@chakra-ui/react';
+import { accordionRecipe } from '@/theme/recipes/accordion';
+import { buttonRecipe } from '@/theme/recipes/button';
+import { cardRecipe } from '@/theme/recipes/card';
 
 export const config = defineConfig({
   globalCss: {
@@ -50,31 +46,25 @@ export const config = defineConfig({
           950: { value: 'oklch(28.3% 0.141 291.089)' },
         },
       },
+      cursor: {
+        accordion: { value: 'pointer' },
+        checkbox: { value: 'pointer' },
+        menuitem: { value: 'pointer' },
+        option: { value: 'pointer' },
+        radio: { value: 'pointer' },
+        select: { value: 'pointer' },
+        slider: { value: 'pointer' },
+      },
       animations: {
         pulse: { value: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' },
       },
     },
     recipes: {
-      button: defineRecipe({
-        defaultVariants: { size: 'lg' },
-      }),
+      button: buttonRecipe,
     },
     slotRecipes: {
-      card: defineSlotRecipe({
-        slots: cardAnatomy.keys(),
-        variants: {
-          variant: {
-            outline: {
-              root: {
-                // backdropFilter: 'blur(8px)',
-                // background: 'whiteAlpha.100',
-                // borderColor: 'whiteAlpha.200',
-                // color: 'fg',
-              },
-            },
-          },
-        },
-      }),
+      accordion: accordionRecipe,
+      card: cardRecipe,
     },
     keyframes: {
       pulse: {
