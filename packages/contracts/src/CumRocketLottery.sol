@@ -58,18 +58,17 @@ contract CumRocketLottery is VRFConsumerBaseV2Plus, ReentrancyGuard {
     bytes32 public immutable keyHash;
 
     /*─────────────────────── ROUND STATE ────────────────────────*/
-    address[] public players;                       // joueurs du round en cours
-    mapping(address => uint256) public deposits;    // dépôts (net) du round en cours
-    uint256 public totalDeposits;                   // net cumulé (round en cours)
+    address[] public players;                       // players of the current round
+    mapping(address => uint256) public deposits;    // (net) deposits of the current round
+    uint256 public totalDeposits;                   // cumulative net (current round)
     bool public acceptingDeposits = true;
 
     // VRF
     uint256 public vrfRequestId;
 
-    // Frais du protocole (global, cumulé)
     uint256 public protocolFees;
 
-    // Paramètres VRF/LINK
+    // VRF/LINK parameters
     uint256 public minLinkBalance = 0.02 ether;
     uint256 public slippageBps = 200; // 2%
 
@@ -81,8 +80,7 @@ contract CumRocketLottery is VRFConsumerBaseV2Plus, ReentrancyGuard {
         uint256 vrfRequestId;
         address[] players;
     }
-    // Nombre de rounds terminés et index du prochain round en cours
-    uint256 public roundsCount; // == nombre de rounds terminés (ids 0..roundsCount-1)
+    uint256 public roundsCount;
     mapping(uint256 => RoundInfo) public rounds;
     mapping(uint256 => mapping(address => uint256)) public depositsAtRound; // roundId => (player => net)
 
@@ -154,7 +152,6 @@ contract CumRocketLottery is VRFConsumerBaseV2Plus, ReentrancyGuard {
         _processDeposit(useAmount);
     }
 
-    /// @notice Le gagnant d'un round terminé réclame son lot.
     function claimPrize(uint256 roundId) external nonReentrant {
         RoundInfo storage r = rounds[roundId];
         if (msg.sender != r.winner) revert NotWinner();
@@ -312,16 +309,16 @@ contract CumRocketLottery is VRFConsumerBaseV2Plus, ReentrancyGuard {
     }
 
     /*──────────────────────── VIEW / UI HELPERS ─────────────────*/
-    /// @notice Net obtenu pour un `gross`.
+    /// @notice Net obtained for a `gross`.
     function previewNet(uint256 gross) public pure returns (uint256) {
         return Math.mulDiv(gross, (BPS_DENOM - FEE_BPS), BPS_DENOM, Math.Rounding.Floor);
     }
-    /// @notice Gross obtenu pour un `net`.
+    /// @notice Gross obtained for a `net`.
     function previewGross(uint256 net) public pure returns (uint256) {
         return Math.mulDiv(net, BPS_DENOM, (BPS_DENOM - FEE_BPS), Math.Rounding.Ceil);
     }
 
-    /// @notice Montant brut accepté (rogné) pour atteindre la target au maximum.
+    /// @notice Accepted gross amount (trimmed) to reach the target at most.
     function capAmount(uint256 amount) public view returns (uint256) {
         uint256 remaining = TARGET_POOL - totalDeposits;
         if (remaining == 0) return 0;
@@ -338,7 +335,7 @@ contract CumRocketLottery is VRFConsumerBaseV2Plus, ReentrancyGuard {
         return linkBal;
     }
 
-    /// @notice Montant brut maximal que l’UI peut proposer maintenant (si l’utilisateur met "infini").
+    /// @notice Maximum gross amount that the UI can propose now (if the user inputs "infinite").
     function maxAcceptableGross() external view returns (uint256) { return capAmount(type(uint256).max); }
 
     function playersCount() external view returns (uint256) { return players.length; }
