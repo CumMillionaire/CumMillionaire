@@ -45,6 +45,7 @@ docker run --rm -p 3000:3000 --name cummillionaire cummillionaire
 ## Build locally and push over ssh
 
 ```bash
+docker compose build
 docker save cummillionaire-cummillionaire | ssh -C cummillionaire 'docker load'
 docker save cummillionaire-cummillionaire-testnet | ssh -C cummillionaire 'docker load'
 ```
