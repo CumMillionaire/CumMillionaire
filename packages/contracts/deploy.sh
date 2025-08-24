@@ -64,7 +64,7 @@ else
     RPC_URL_VAR="BSC_MAINNET_RPC_URL"
     EXPLORER_NAME="BscScan"
     EXPLORER_URL="https://bscscan.com"
-    VRF_URL="https://vrf.chain.link/bnb-chain"
+    VRF_URL="https://vrf.chain.link/bsc"
     FAUCET_URL=""
     PANCAKESWAP_URL="https://pancakeswap.finance/?chain=bsc"
 fi
