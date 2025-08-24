@@ -1,0 +1,75 @@
+services:
+  traefik:
+    image: traefik:v3.5
+    command:
+      # Providers
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/dynamic
+      - --providers.file.watch=true
+
+      # Entrypoints
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.asDefault=true
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.asDefault=true
+      - --entrypoints.websecure.http.tls=true
+      - --entrypoints.websecure.http.tls.certresolver=${CERTRESOLVER}
+
+      # HTTP to HTTPS redirect globally
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --entrypoints.web.http.redirections.entryPoint.permanent=true
+
+      # Logs
+      - --log.level=INFO
+      - --accesslog=true
+
+      # Let's Encrypt configuration (only used in production)
+      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/dynamic:/dynamic:ro
+      - ./traefik/letsencrypt:/letsencrypt
+      - ./traefik/certs:/certs:ro
+    restart: unless-stopped
+
+  cummillionaire:
+    build:
+      dockerfile: ./packages/web/Dockerfile
+      context: .
+      args:
+        NEXT_PUBLIC_PROJECT_ID: ${NEXT_PUBLIC_PROJECT_ID}
+        NEXT_PUBLIC_CHAIN_NAME: mainnet
+    environment:
+      - NODE_ENV=production
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.cum.rule=Host(`${DOMAIN}`)
+      - traefik.http.services.cum.loadbalancer.server.port=3000
+      # temporary redirection
+      - traefik.http.routers.cum.middlewares=cum-to-testnet
+      - traefik.http.routers.cum.service=noop@internal
+      - traefik.http.middlewares.cum-to-testnet.redirectregex.regex=^https?://(www\.)?${DOMAIN}/?(.*)
+      - traefik.http.middlewares.cum-to-testnet.redirectregex.replacement=https://testnet.${DOMAIN}/$2
+    restart: unless-stopped
+
+  cummillionaire-testnet:
+    build:
+      dockerfile: ./packages/web/Dockerfile
+      context: .
+      args:
+        NEXT_PUBLIC_PROJECT_ID: ${NEXT_PUBLIC_PROJECT_ID}
+        NEXT_PUBLIC_CHAIN_NAME: testnet
+    environment:
+      - NODE_ENV=production
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.cumtest.rule=Host(`testnet.${DOMAIN}`)
+      - traefik.http.services.cumtest.loadbalancer.server.port=3000
+    restart: unless-stopped
