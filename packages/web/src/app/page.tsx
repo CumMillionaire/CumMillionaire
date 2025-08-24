@@ -19,6 +19,7 @@ import {
   Span,
   Stack,
   Text,
+  Wrap,
 } from '@chakra-ui/react';
 import {
   Copy,
@@ -123,7 +124,7 @@ export default function Home() {
 
       {/* Navbar */}
       <Container maxW="7xl" py={5}>
-        <Flex align="center" justify="space-between">
+        <Flex align="center" justify="space-between" gap={4} direction={{ base: 'column', md: 'row' }}>
           <Flex align="center" gap={3}>
             <GradientLogo />
             <Text fontWeight="semibold" fontSize="lg">
@@ -206,7 +207,7 @@ export default function Home() {
                 </SimpleGrid>
               </Card.Body>
               <Card.Footer>
-                <Stack direction={{ base: 'column', sm: 'row' }} gap={3}>
+                <Wrap gap={3}>
                   <Button size="sm" variant="outline" asChild>
                     <Link
                       unstyled
@@ -245,7 +246,7 @@ export default function Home() {
                       <Copy size={16} /> Copy address
                     </Button>
                   </Tooltip>
-                </Stack>
+                </Wrap>
               </Card.Footer>
             </Card.Root>
           </MotionBox>
