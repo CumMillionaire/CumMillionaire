@@ -52,11 +52,6 @@ services:
       - traefik.enable=true
       - traefik.http.routers.cum.rule=Host(`${DOMAIN}`)
       - traefik.http.services.cum.loadbalancer.server.port=3000
-      # temporary redirection
-      - traefik.http.routers.cum.middlewares=cum-to-testnet
-      - traefik.http.routers.cum.service=noop@internal
-      - traefik.http.middlewares.cum-to-testnet.redirectregex.regex=^https?://(www\.)?${DOMAIN}/?(.*)
-      - traefik.http.middlewares.cum-to-testnet.redirectregex.replacement=https://testnet.${DOMAIN}/$2
     restart: unless-stopped
 
   cummillionaire-testnet:
