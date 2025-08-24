@@ -350,10 +350,12 @@ export function DepositModal({
                           const value = Math.max(0, Math.min(v, effectiveMax));
                           setAmountText(value === v ? input : value.toString());
                         } else if (input === '') {
-                          setAmountText('0');
+                          setAmountText('');
                         }
                       }
                     }}
+                    placeholder="0.0"
+                    _placeholder={{ color: 'whiteAlpha.500' }}
                     borderColor="whiteAlpha.300"
                   />
                 </Field.Root>

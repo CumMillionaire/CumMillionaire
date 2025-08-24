@@ -24,7 +24,7 @@ import { ConnectWalletButton } from '@/components/ConnectWalletButton';
 
 export function DepositPanel({ onDeposit, balance }: any) {
   const { address } = useAccount();
-  const [amountText, setAmountText] = useState('0');
+  const [amountText, setAmountText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
   const amount = Number(amountText);
@@ -79,7 +79,7 @@ export function DepositPanel({ onDeposit, balance }: any) {
                             const value = Math.max(0, Math.min(v, effectiveMax));
                             setAmountText(value === v ? input : value.toString());
                           } else if (input === '') {
-                            setAmountText('0');
+                            setAmountText('');
                           }
                         }
                       }}
