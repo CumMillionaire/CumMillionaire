@@ -2,6 +2,7 @@ import { createSystem, defineConfig, defaultConfig } from '@chakra-ui/react';
 import { accordionRecipe } from '@/theme/recipes/accordion';
 import { buttonRecipe } from '@/theme/recipes/button';
 import { cardRecipe } from '@/theme/recipes/card';
+import { sliderRecipe } from '@/theme/recipes/slider';
 
 export const config = defineConfig({
   globalCss: {
@@ -47,13 +48,16 @@ export const config = defineConfig({
         },
       },
       cursor: {
-        accordion: { value: 'pointer' },
-        checkbox: { value: 'pointer' },
-        menuitem: { value: 'pointer' },
-        option: { value: 'pointer' },
-        radio: { value: 'pointer' },
-        select: { value: 'pointer' },
-        slider: { value: 'pointer' },
+        button: { value: 'url(\'/fuck.cur\'), pointer' },
+        buttonActive: { value: 'url(\'/fuck-grab.cur\'), pointer' },
+        accordion: { value: 'url(\'/fuck.cur\'), pointer' },
+        checkbox: { value: 'url(\'/fuck.cur\'), pointer' },
+        menuitem: { value: 'url(\'/fuck.cur\'), pointer' },
+        option: { value: 'url(\'/fuck.cur\'), pointer' },
+        radio: { value: 'url(\'/fuck.cur\'), pointer' },
+        select: { value: 'url(\'/fuck.cur\'), pointer' },
+        slider: { value: 'url(\'/fuck.cur\'), pointer' },
+        sliderActive: { value: 'url(\'/fuck-grab.cur\'), pointer' },
       },
       animations: {
         pulse: { value: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' },
@@ -65,6 +69,7 @@ export const config = defineConfig({
     slotRecipes: {
       accordion: accordionRecipe,
       card: cardRecipe,
+      slider: sliderRecipe,
     },
     keyframes: {
       pulse: {
