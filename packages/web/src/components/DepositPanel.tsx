@@ -132,7 +132,7 @@ export function DepositPanel({ onDeposit, balance }: any) {
         </Card.Body>
         <Card.Footer justifyItems="space-between" gap={4}>
           <Text fontSize="xs" color="whiteAlpha.700">
-            By depositing you accept the terms. Always gamble responsibly.
+            {/* By depositing you accept the terms.  */}Always gamble responsibly.
           </Text>
           <Spacer />
           <Button onClick={() => setIsOpen(true)} disabled={!address || amount <= 0}>

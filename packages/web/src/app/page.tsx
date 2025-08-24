@@ -348,12 +348,12 @@ export default function Home() {
           <Flex direction={{ base: 'column', md: 'row' }} align={{ base: 'flex-start', md: 'center' }} justify="space-between" gap={3} color="whiteAlpha.800" fontSize="sm">
             <Text> {new Date().getFullYear()} CumMillionaire. Built on BNB Chain.</Text>
             <Flex gap={4}>
-              <Link href="#" _hover={{ color: 'white' }}>
+              {/* <Link href="#" _hover={{ color: 'white' }}>
                 Terms
               </Link>
               <Link href="#" _hover={{ color: 'white' }}>
                 Privacy
-              </Link>
+              </Link> */}
               <Text color="whiteAlpha.600">Always gamble responsibly.</Text>
             </Flex>
           </Flex>
