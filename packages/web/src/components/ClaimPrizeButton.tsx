@@ -4,7 +4,7 @@ import { CONTRACTS, LOTTERY_ABI } from '@/config/contracts';
 import { useCoolMode } from '@/hooks/useCoolMode';
 import { Button, Link, Stack, Text } from '@chakra-ui/react';
 import { parseViemError } from '@/utils/parseViemError';
-import { txUrlFor } from '@/utils/txUrlFor';
+import { txScanUrl } from '@/utils/scanUrl';
 
 export function ClaimPrizeButton({ roundId, disabled, onClaimed }: { roundId: number; disabled?: boolean; onClaimed?: () => void }) {
   const { address } = useAccount();
@@ -84,7 +84,7 @@ export function ClaimPrizeButton({ roundId, disabled, onClaimed }: { roundId: nu
         Withdraw my winnings
       </Button>
       {hash && (
-        <Link href={txUrlFor(hash, chainId)} target="_blank" rel="noreferrer" fontSize="xs">
+        <Link href={txScanUrl(hash, chainId)} target="_blank" rel="noreferrer" fontSize="xs">
           View transaction
         </Link>
       )}

@@ -1,5 +1,7 @@
 import { Address } from 'viem';
 
+export const CONTRACT_URL = 'https://github.com/CumMillionaire/CumMillionaire/blob/main/packages/contracts/src/CumRocketLottery.sol';
+
 const CONTRACTS_MAP: Record<string, any> = {
   mainnet: {
     LOTTERY: '0x0000000000000000000000000000000000000000' as Address,

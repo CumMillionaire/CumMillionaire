@@ -4,7 +4,7 @@ import { CONTRACTS, LOTTERY_ABI } from '@/config/contracts';
 import { Button, Link, Stack, Text } from '@chakra-ui/react';
 import { Zap } from 'lucide-react';
 import { parseViemError } from '@/utils/parseViemError';
-import { txUrlFor } from '@/utils/txUrlFor';
+import { txScanUrl } from '@/utils/scanUrl';
 
 export function DrawLotteryButton({ disabled }: { disabled?: boolean; }) {
   const { address } = useAccount();
@@ -53,7 +53,7 @@ export function DrawLotteryButton({ disabled }: { disabled?: boolean; }) {
         Launch lottery draw
       </Button>
       {hash && (
-        <Link href={txUrlFor(hash, chainId)} target="_blank" rel="noreferrer" fontSize="xs">
+        <Link href={txScanUrl(hash, chainId)} target="_blank" rel="noreferrer" fontSize="xs">
           View transaction
         </Link>
       )}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useAccount, useChainId, useReadContract } from 'wagmi';
 import { formatUnits } from 'viem';
 import {
@@ -29,7 +30,8 @@ import {
   Trophy,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { CONTRACTS, CUMMIES_ABI, LOTTERY_ABI } from '@/config/contracts';
+import { useTimeoutFn } from 'react-use';
+import { CONTRACTS, CUMMIES_ABI, LOTTERY_ABI, CONTRACT_URL } from '@/config/contracts';
 import { StatusBadge } from '@/components/StatusBadge';
 import { GradientLogo } from '@/components/GradientLogo';
 import { GradientText } from '@/components/GradientText';
@@ -39,7 +41,10 @@ import { DrawLotteryButton } from '@/components/DrawLotteryButton';
 import { DepositPanel } from '@/components/DepositPanel';
 import { RoundsHistorySection } from '@/components/RoundsHistorySection';
 import { ConnectWalletButton } from '@/components/ConnectWalletButton';
+import { Tooltip } from '@/components/ui/tooltip';
 import { fmt } from '@/utils/formatNumber';
+import { readContractScanUrl } from '@/utils/scanUrl';
+import { copyText } from '@/utils/copyText';
 
 const MotionBox = motion.create(Box);
 
@@ -97,6 +102,15 @@ export default function Home() {
   const status = progress >= 100 ? 'FINISHED' : 
                  (isRoundActive && acceptingDeposits) ? 'LIVE' : 
                  total > 0 ? 'PAUSED' : 'IDLE';
+
+  const [copied, setCopied] = useState(false);
+
+  useTimeoutFn(
+    () => {
+      setCopied(false);
+    },
+    copied ? 1200 : undefined,
+  );
 
   return (
     <Box minH="100vh" position="relative" overflow="hidden">
@@ -193,15 +207,44 @@ export default function Home() {
               </Card.Body>
               <Card.Footer>
                 <Stack direction={{ base: 'column', sm: 'row' }} gap={3}>
-                  <Button size="sm" variant="outline">
-                    <Info size={16} /> View contract
+                  <Button size="sm" variant="outline" asChild>
+                    <Link
+                      unstyled
+                      href={CONTRACT_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Info size={16} /> View contract
+                    </Link>
                   </Button>
-                  <Button size="sm" variant="outline">
-                    <ExternalLink size={16} /> BscScan
+                  <Button size="sm" variant="outline" asChild>
+                    <Link
+                      unstyled
+                      href={readContractScanUrl(CONTRACTS.LOTTERY, chainId)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink size={16} /> BscScan
+                    </Link>
                   </Button>
-                  <Button size="sm" variant="outline">
-                    <Copy size={16} /> Copy address
-                  </Button>
+                  <Tooltip
+                    content="Copied !"
+                    showArrow
+                    open={copied}
+                    openDelay={0}
+                    closeDelay={0}
+                  >
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={async () => {
+                        const success = await copyText(CONTRACTS.LOTTERY);
+                        if (success) setCopied(true);
+                      }}
+                    >
+                      <Copy size={16} /> Copy address
+                    </Button>
+                  </Tooltip>
                 </Stack>
               </Card.Footer>
             </Card.Root>
