@@ -1,8 +1,28 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Box, Button, Flex } from '@chakra-ui/react';
 import { Wallet } from 'lucide-react';
+import { useCoolMode } from '@/hooks/useCoolMode';
 
 export function ConnectWalletButton() {
+  const coolCumRef = useCoolMode('/cum.svg', true, {
+    meanAngleDeg: -90,
+    spreadDeg: 20,
+    minSpeed: 12,
+    maxSpeed: 18,
+    gravity: 0.15,
+    drag: 0.01,
+    alignWithVelocity: true,
+    headingOffsetDeg: 90,
+
+    burstCount: 30,            // total per burst
+    burstIntervalSec: 0.5,     // time between burst starts
+    burstDurationSec: 0.18,    // <-- spread emission of the 30 over 180ms
+    burstJitterSec: 0.03,      // small randomness on interval (optional)
+    initialBurstDelaySec: 0,
+
+    maxParticles: 220,
+  });
+
   return (
     <ConnectButton.Custom>
       {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
@@ -22,7 +42,14 @@ export function ConnectWalletButton() {
             {(() => {
               if (!connected) {
                 return (
-                  <Button onClick={openConnectModal} bgColor="transparent" color="fg" position="relative" overflow="hidden">
+                  <Button
+                    ref={coolCumRef as React.Ref<HTMLButtonElement>}
+                    onClick={openConnectModal}
+                    bgColor="transparent"
+                    color="fg"
+                    position="relative"
+                    overflow="hidden"
+                  >
                     <Box
                       position="absolute"
                       inset={0}
