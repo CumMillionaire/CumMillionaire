@@ -41,3 +41,10 @@ docker compose up
 # or webapp only
 docker run --rm -p 3000:3000 --name cummillionaire cummillionaire
 ```
+
+## Build locally and push over ssh
+
+```bash
+docker save cummillionaire-cummillionaire | ssh -C cummillionaire 'docker load'
+docker save cummillionaire-cummillionaire-testnet | ssh -C cummillionaire 'docker load'
+```
