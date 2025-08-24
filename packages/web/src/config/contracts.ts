@@ -4,7 +4,7 @@ export const CONTRACT_URL = 'https://github.com/CumMillionaire/CumMillionaire/bl
 
 const CONTRACTS_MAP: Record<string, any> = {
   mainnet: {
-    LOTTERY: '0x0000000000000000000000000000000000000000' as Address,
+    LOTTERY: '0x78C6836d6240498E186dc85190B32378779Ee1a4' as Address,
     CUMMIES_TOKEN: '0x27Ae27110350B98d564b9A3eeD31bAeBc82d878d' as Address,
     PERMIT2: '0x000000000022D473030F116dDEE9F6B43aC78BA3' as Address,
   },
